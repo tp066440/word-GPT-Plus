@@ -9,28 +9,29 @@
   <!-- Begin Basic Settings: Add-in metadata, used for all versions of Office unless override provided. -->
 
   <!-- IMPORTANT! Id must be unique for your add-in, if you reuse this manifest ensure that you change this id to a new GUID. -->
-  <Id>6b20e038-5f8e-4e3b-8481-976c5a9c0bc3</Id>
+  <Id>9ce98a22-291f-43fd-a2d6-e7fe3279ecd9</Id>
 
   <!--Version. Updates from the store only get triggered if there is a version change. -->
   <Version>1.0.0.0</Version>
-  <ProviderName>Kuingsmile</ProviderName>
+  <ProviderName>AIAPP</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
-  <DisplayName DefaultValue="Word GPT Plus" />
-  <Description DefaultValue="A chatGPT add in for Word"/>
+  <DisplayName DefaultValue="Word GPT AIAPP" />
+  <Description DefaultValue="A chatGPT add-in for Word"/>
 
   <!-- Icon for your add-in. Used on installation screens and the add-ins dialog. -->
-  <IconUrl DefaultValue="http://localhost:3000/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="http://localhost:3000/assets/icon-80.png"/>
+  <IconUrl DefaultValue="https://word.aiapp.gg/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://word.aiapp.gg/assets/icon-80.png"/>
 
   <!--If you plan to submit this add-in to the Office Store, uncomment the SupportUrl element below-->
   <!--<SupportUrl DefaultValue="[Insert the URL of a page that provides support information for the app]" />-->
 
   <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
   <AppDomains>
-    <AppDomain>AppDomain1</AppDomain>
-    <AppDomain>AppDomain2</AppDomain>
-    <AppDomain>AppDomain3</AppDomain>
+    <AppDomain>aiapp.gg</AppDomain>
+    <AppDomain>web.aiapp.gg</AppDomain>
+    <AppDomain>nchat.aiapp.gg</AppDomain>
+    <AppDomain>pdf.aiapp.gg</AppDomain>
   </AppDomains>
   <!--End Basic Settings. -->
 
@@ -39,7 +40,7 @@
     <Host Name="Document" />
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="http://localhost:3000/index.html" />
+    <SourceLocation DefaultValue="https://word.aiapp.gg/index.html" />
   </DefaultSettings>
   <!-- End TaskPane Mode integration.  -->
 
@@ -119,20 +120,20 @@
     <!-- You can use resources across hosts and form factors. -->
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="http://localhost:3000/assets/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="http://localhost:3000/assets/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="http://localhost:3000/assets/icon-80.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="https://word.aiapp.gg/assets/icon-16.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="https://word.aiapp.gg/assets/icon-32.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="https://word.aiapp.gg/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812" />
-        <bt:Url id="Commands.Url" DefaultValue="http://localhost:3000/commands.html" />
-        <bt:Url id="Taskpane.Url" DefaultValue="http://localhost:3000/index.html" />
+        <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://aiapp.gg" />
+        <bt:Url id="Commands.Url" DefaultValue="https://word.aiapp.gg/commands.html" />
+        <bt:Url id="Taskpane.Url" DefaultValue="https://word.aiapp.gg/index.html" />
       </bt:Urls>
       <!-- ShortStrings max characters==125. -->
       <bt:ShortStrings>
-        <bt:String id="GetStarted.Title" DefaultValue="Get started with chatGPT!" />
-        <bt:String id="CommandsGroup.Label" DefaultValue="GPT" />
-        <bt:String id="TaskpaneButton.Label" DefaultValue="GPT Plus" />
+        <bt:String id="GetStarted.Title" DefaultValue="Get started with AIAPP!" />
+        <bt:String id="CommandsGroup.Label" DefaultValue="aiapp" />
+        <bt:String id="TaskpaneButton.Label" DefaultValue="aiapp.gg" />
       </bt:ShortStrings>
       <!-- LongStrings max characters==250. -->
       <bt:LongStrings>
