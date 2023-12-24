@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n'
 
 const messages = {
   en: {
+    login: 'Login',
     apiKey: 'API Key',
     apiKeyDescription: 'API key',
     accessToken: 'Access Token',

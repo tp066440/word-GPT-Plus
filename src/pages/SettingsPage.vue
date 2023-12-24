@@ -709,7 +709,7 @@ function handleGeminiModelChange (val: string) {
 }
 
 function backToHome () {
-  router.push('/')
+  router.push('/login')
 }
 
 </script>

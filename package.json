@@ -21,6 +21,7 @@
     "dexie": "^3.2.4",
     "element-plus": "^2.4.3",
     "openai": "^4.10.0",
+    "pinia": "^2.1.7",
     "unfetch": "^5.0.0",
     "vue": "^3.3.11",
     "vue-class-component": "^8.0.0-rc.1",

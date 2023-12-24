@@ -1,17 +1,27 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
+import { useUserStore } from '@/store/authStore'
 
-export default createRouter({
+const router = createRouter({
   history: createMemoryHistory(),
   routes: [
     {
       path: '/',
       name: 'Home',
-      component: () => import(/* webpackChunkName: "home" */ '../pages/HomePage.vue')
+      meta: { requiresAuth: true },
+      component: () =>
+        import(/* webpackChunkName: 'home' */ '../pages/HomePage.vue')
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () =>
+        import(/* webpackChunkName: 'login' */ '../pages/LoginPage.vue')
     },
     {
       path: '/settings',
       name: 'Settings',
-      component: () => import(/* webpackChunkName: "settings" */ '../pages/SettingsPage.vue')
+      component: () =>
+        import(/* webpackChunkName: 'settings' */ '../pages/SettingsPage.vue')
     },
     {
       path: '/:pathMatch(.*)*',
@@ -19,3 +29,18 @@ export default createRouter({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const store = useUserStore()
+  const authUser = store.user
+  const reqAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const loginQuery = { path: '/login', query: { redirect: to.fullPath } }
+
+  if (reqAuth && !authUser) {
+    next(loginQuery)
+  } else {
+    next() // make sure to always call next()!
+  }
+})
+
+export default router

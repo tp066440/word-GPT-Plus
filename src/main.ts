@@ -4,6 +4,9 @@ import { i18n } from './i18n'
 import router from './router'
 import ElementUI from 'element-plus'
 import 'element-plus/dist/index.css'
+import { createPinia } from 'pinia'
+
+const pinia = createPinia()
 
 window.Office.onReady(() => {
   const app = createApp(App)
@@ -30,6 +33,7 @@ window.Office.onReady(() => {
   }
   app.use(i18n)
   app.use(router)
+  app.use(pinia)
   app.use(ElementUI)
   app.mount('#app')
 })
