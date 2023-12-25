@@ -1,226 +1,250 @@
 <template>
-  <div class="container">
-    <el-form
-      label-position="left"
-      label-width="70px"
-    >
-      <el-form-item>
-        <template #label>
-          <span>{{ $t('homeSystem') }}</span>
-        </template>
-        <el-input
-          v-model="systemPrompt"
-          clearable
-          size="small"
-          :placeholder="$t('homeSystemDescription')"
-        />
-        <span>
-          <el-select
-            v-model="systemPromptSelected"
-            size="small"
-            placeholder="Select a system prompt"
-            @change="handelSystemPromptChange"
-          >
-            <el-option
-              v-for="item in systemPromptList"
-              :key="item.value"
-              :label="item.key"
-              :value="item.value"
-            />
-          </el-select>
-          <el-icon
-            color="#409EFF"
-            style="cursor: pointer;margin-left: 5px;vertical-align: middle;"
-            size="15px"
-            @click="addSystemPromptVisible = true"
-          >
-            <CirclePlus />
-          </el-icon>
-          <el-icon
-            color="red"
-            style="cursor: pointer;margin-left: 5px;vertical-align: middle;"
-            size="15px"
-            @click="removeSystemPromptVisible = true"
-          >
-            <Remove />
-          </el-icon>
-        </span>
-      </el-form-item>
-      <el-form-item>
-        <template #label>
-          <span>{{ $t('homePrompt') }}</span>
-        </template>
-        <el-input
-          v-model="prompt"
-          autofocus
-          clearable
-          size="small"
-          :placeholder="$t('homePromptDescription')"
-        />
-        <span>
-          <el-select
-            v-model="promptSelected"
-            size="small"
-            placeholder="Select a prompt"
-            @change="handelPromptChange"
-          >
-            <el-option
-              v-for="item in promptList"
-              :key="item.value"
-              :label="item.key"
-              :value="item.value"
-            />
-          </el-select>
-          <el-icon
-            color="#409EFF"
-            style="cursor: pointer;margin-left: 5px;vertical-align: middle;"
-            size="15px"
-            @click="addPromptVisible = true"
-          >
-            <CirclePlus />
-          </el-icon>
-          <el-icon
-            color="red"
-            style="cursor: pointer;margin-left: 5px;vertical-align: middle;"
-            size="15px"
-            @click="removePromptVisible = true"
-          >
-            <Remove />
-          </el-icon>
-        </span>
-      </el-form-item>
-      <el-form-item>
-        <template #label>
-          <span>{{ $t('settingReplyLanguage') }}</span>
-        </template>
-        <el-select
-          v-model="replyLanguage"
-          size="small"
-          placeholder="Select a reply language"
-          @change="handelReplyLanguageChange"
-        >
-          <el-option
-            v-for="item in replyLanguageList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <template #label>
-          <span>{{ $t('insertType') }}</span>
-        </template>
-        <el-select
-          v-model="insertType"
-          size="small"
-          placeholder="Select a insert type"
-          @change="handelInsertTypeChange"
-        >
-          <el-option
-            v-for="item in insertTypeList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-    </el-form>
-    <div
-      style="width: 100%"
-    >
-      <el-progress
-        v-if="loading"
-        :percentage="50"
-        indeterminate
-        :duration="5"
-        status="warning"
-        style="widows: 100%;"
-      />
-    </div>
-    <el-button-group
-      class="input-group"
-      style="margin-top: 5px;"
-    >
-      <el-button
-        class="api-button"
-        type="primary"
-        size="small"
-        :disabled="loading"
-        @click="translate"
+  <div>
+    <el-container>
+      <el-header
+        height="50"
+        style="display: flex;justify-content:space-between;align-items:center;"
       >
-        {{ $t('translate') }}
-      </el-button>
-      <el-button
-        class="api-button"
-        type="primary"
-        size="small"
-        :disabled="loading"
-        @click="summarize"
-      >
-        {{ $t('summarize') }}
-      </el-button>
-      <el-button
-        class="api-button"
-        type="primary"
-        size="small"
-        :disabled="loading"
-        @click="polish"
-      >
-        {{ $t('polish') }}
-      </el-button>
-      <el-button
-        class="api-button"
-        type="primary"
-        size="small"
-        :disabled="loading"
-        @click="academic"
-      >
-        {{ $t('academic') }}
-      </el-button>
-      <el-button
-        class="api-button"
-        type="warning"
-        size="small"
-        @click="settings"
-      >
-        {{ $t('settings') }}
-      </el-button>
-    </el-button-group>
-    <div
-      style="margin-top: 5px;align-items: center;display: flex;margin-bottom: 5px;"
-    >
-      <el-button-group>
+        <div>
+          <span class="text-large font-600 mr-3">
+            {{ store.user.name }}
+          </span>
+          <el-tag type="warning">
+            {{ store.balance }}
+          </el-tag>
+        </div>
         <el-button
-          class="api-button"
-          type="success"
-          size="default"
-          :disabled="loading"
-          @click="StartChat"
+          type="danger"
+          size="small"
+          @click="store.logout()"
         >
-          {{ $t('start') }}
+          Logout
         </el-button>
-        <el-button
-          v-if="['web-api', 'azure', 'official', 'gemini'].includes(api)"
-          class="api-button"
-          type="success"
-          size="default"
-          :disabled="loading"
-          @click="continueChat"
+      </el-header>
+      <el-main class="container">
+        <el-form
+          label-position="left"
+          label-width="70px"
         >
-          {{ $t('continue') }}
-        </el-button>
-      </el-button-group>
-    </div>
-    <div class="result-group">
-      <el-input
-        v-model="result"
-        type="textarea"
-        autosize
-        :row="5"
-        :aria-placeholder="$t('result')"
-      />
-    </div>
+          <el-form-item>
+            <template #label>
+              <span>{{ $t('homeSystem') }}</span>
+            </template>
+            <el-input
+              v-model="systemPrompt"
+              clearable
+              size="small"
+              :placeholder="$t('homeSystemDescription')"
+            />
+            <span>
+              <el-select
+                v-model="systemPromptSelected"
+                size="small"
+                placeholder="Select a system prompt"
+                @change="handelSystemPromptChange"
+              >
+                <el-option
+                  v-for="item in systemPromptList"
+                  :key="item.value"
+                  :label="item.key"
+                  :value="item.value"
+                />
+              </el-select>
+              <el-icon
+                color="#409EFF"
+                style="cursor: pointer;margin-left: 5px;vertical-align: middle;"
+                size="15px"
+                @click="addSystemPromptVisible = true"
+              >
+                <CirclePlus />
+              </el-icon>
+              <el-icon
+                color="red"
+                style="cursor: pointer;margin-left: 5px;vertical-align: middle;"
+                size="15px"
+                @click="removeSystemPromptVisible = true"
+              >
+                <Remove />
+              </el-icon>
+            </span>
+          </el-form-item>
+          <el-form-item>
+            <template #label>
+              <span>{{ $t('homePrompt') }}</span>
+            </template>
+            <el-input
+              v-model="prompt"
+              autofocus
+              clearable
+              size="small"
+              :placeholder="$t('homePromptDescription')"
+            />
+            <span>
+              <el-select
+                v-model="promptSelected"
+                size="small"
+                placeholder="Select a prompt"
+                @change="handelPromptChange"
+              >
+                <el-option
+                  v-for="item in promptList"
+                  :key="item.value"
+                  :label="item.key"
+                  :value="item.value"
+                />
+              </el-select>
+              <el-icon
+                color="#409EFF"
+                style="cursor: pointer;margin-left: 5px;vertical-align: middle;"
+                size="15px"
+                @click="addPromptVisible = true"
+              >
+                <CirclePlus />
+              </el-icon>
+              <el-icon
+                color="red"
+                style="cursor: pointer;margin-left: 5px;vertical-align: middle;"
+                size="15px"
+                @click="removePromptVisible = true"
+              >
+                <Remove />
+              </el-icon>
+            </span>
+          </el-form-item>
+          <el-form-item>
+            <template #label>
+              <span>{{ $t('settingReplyLanguage') }}</span>
+            </template>
+            <el-select
+              v-model="replyLanguage"
+              size="small"
+              placeholder="Select a reply language"
+              @change="handelReplyLanguageChange"
+            >
+              <el-option
+                v-for="item in replyLanguageList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <template #label>
+              <span>{{ $t('insertType') }}</span>
+            </template>
+            <el-select
+              v-model="insertType"
+              size="small"
+              placeholder="Select a insert type"
+              @change="handelInsertTypeChange"
+            >
+              <el-option
+                v-for="item in insertTypeList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div
+          style="width: 100%"
+        >
+          <el-progress
+            v-if="loading"
+            :percentage="50"
+            indeterminate
+            :duration="5"
+            status="warning"
+            style="widows: 100%;"
+          />
+        </div>
+        <el-button-group
+          class="input-group"
+          style="margin-top: 5px;"
+        >
+          <el-button
+            class="api-button"
+            type="primary"
+            size="small"
+            :disabled="loading"
+            @click="translate"
+          >
+            {{ $t('translate') }}
+          </el-button>
+          <el-button
+            class="api-button"
+            type="primary"
+            size="small"
+            :disabled="loading"
+            @click="summarize"
+          >
+            {{ $t('summarize') }}
+          </el-button>
+          <el-button
+            class="api-button"
+            type="primary"
+            size="small"
+            :disabled="loading"
+            @click="polish"
+          >
+            {{ $t('polish') }}
+          </el-button>
+          <el-button
+            class="api-button"
+            type="primary"
+            size="small"
+            :disabled="loading"
+            @click="academic"
+          >
+            {{ $t('academic') }}
+          </el-button>
+          <el-button
+            class="api-button"
+            type="warning"
+            size="small"
+            @click="settings"
+          >
+            {{ $t('settings') }}
+          </el-button>
+        </el-button-group>
+        <div
+          style="margin-top: 5px;align-items: center;display: flex;margin-bottom: 5px;"
+        >
+          <el-button-group>
+            <el-button
+              class="api-button"
+              type="success"
+              size="default"
+              :disabled="loading"
+              @click="StartChat"
+            >
+              {{ $t('start') }}
+            </el-button>
+            <el-button
+              v-if="['web-api', 'azure', 'official', 'gemini'].includes(api)"
+              class="api-button"
+              type="success"
+              size="default"
+              :disabled="loading"
+              @click="continueChat"
+            >
+              {{ $t('continue') }}
+            </el-button>
+          </el-button-group>
+        </div>
+        <div class="result-group">
+          <el-input
+            v-model="result"
+            type="textarea"
+            autosize
+            :row="5"
+            :aria-placeholder="$t('result')"
+          />
+        </div>
+      </el-main>
+    </el-container>
     <el-dialog
       v-model="addSystemPromptVisible"
       width="90%"
@@ -397,6 +421,9 @@ import { ElMessage } from 'element-plus'
 import { ChatGPTUnofficialProxyAPI, ChatMessage } from 'chatgpt'
 import { checkAuth, forceNumber } from '@/utils/common'
 import API from '@/api'
+import { useUserStore } from '@/store/authStore'
+
+const store = useUserStore()
 
 const replyLanguageList = Object.values(languageMap).map((key) => ({
   label: key,
@@ -416,7 +443,7 @@ const replyLanguage = ref('English')
 const webModel = ref('default')
 
 const temperature = ref(0.7)
-const maxTokens = ref(800)
+const maxTokens = ref(500)
 const model = ref('gpt-3.5-turbo')
 const basePath = ref('')
 
@@ -600,6 +627,9 @@ onBeforeMount(async () => {
   await getPromptList()
   if (promptList.value.find((item) => item.value === prompt.value)) {
     promptSelected.value = prompt.value
+  }
+  if (apiKey.value) {
+    apiKey.value = atob(apiKey.value)
   }
 })
 
@@ -928,7 +958,7 @@ async function continueChat () {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  /* margin-top: 50px; */
 }
 
 .input-group {
@@ -946,4 +976,7 @@ async function continueChat () {
   width: 100%;
 }
 
+.mr-3 {
+ margin-right: 1rem;
+}
 </style>

@@ -53,72 +53,75 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <template #label>
-              <span>
-                {{ $t('chooseAPI') }}
-              </span>
-            </template>
-            <el-select
-              v-model="api"
-              size="small"
-              :placeholder="$t('chooseAPIDescription')"
-              @change="handleApiChange"
+          <template v-if="!store.isLoggedIn">
+            <el-form-item>
+              <template #label>
+                <span>
+                  {{ $t('chooseAPI') }}
+                </span>
+              </template>
+              <el-select
+                v-model="api"
+                size="small"
+                :placeholder="$t('chooseAPIDescription')"
+                @change="handleApiChange"
+              >
+                <el-option
+                  v-for="item in apiList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              v-if="api === 'web-api'"
             >
-              <el-option
-                v-for="item in apiList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+              <template #label>
+                <span>
+                  {{ $t('accessToken') }}
+                </span>
+              </template>
+              <el-input
+                v-model="accessToken"
+                :placeholder="$t('accessTokenDescription')"
+                size="small"
+                clearable
+                @blur="handleAccessTokenChange"
               />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            v-if="api === 'web-api'"
-          >
-            <template #label>
-              <span>
-                {{ $t('accessToken') }}
-              </span>
-            </template>
-            <el-input
-              v-model="accessToken"
-              :placeholder="$t('accessTokenDescription')"
-              size="small"
-              clearable
-              @blur="handleAccessTokenChange"
-            />
-          </el-form-item>
-          <el-form-item
-            v-if="api === 'official'"
-          >
-            <template #label>
-              <span>
-                {{ $t('apiKey') }}
-              </span>
-            </template>
-            <el-input
-              v-model="apiKey"
-              :placeholder="$t('apiKeyDescription')"
-              size="small"
-              @blur="handleApiKeyChange"
-            />
-          </el-form-item>
-          <el-form-item
-            v-if="api === 'azure'"
-          >
-            <template #label>
-              <span>
-                {{ $t('apiKey') }}
-              </span>
-            </template>
-            <el-input
-              v-model="azureAPIKey"
-              :placeholder="$t('apiKeyDescription')"
-              size="small"
-              @blur="handleAzureAPIKeyChange"
-            />
-          </el-form-item>
+            </el-form-item>
+            <el-form-item
+              v-if="api === 'official'"
+            >
+              <template #label>
+                <span>
+                  {{ $t('apiKey') }}
+                </span>
+              </template>
+              <el-input
+                v-model="apiKey"
+                :placeholder="$t('apiKeyDescription')"
+                size="small"
+                @blur="handleApiKeyChange"
+              />
+            </el-form-item>
+            <el-form-item
+              v-if="api === 'azure'"
+            >
+              <template #label>
+                <span>
+                  {{ $t('apiKey') }}
+                </span>
+              </template>
+              <el-input
+                v-model="azureAPIKey"
+                :placeholder="$t('apiKeyDescription')"
+                size="small"
+                @blur="handleAzureAPIKeyChange"
+              />
+            </el-form-item>
+          </template>
+
           <el-form-item
             v-if="api === 'azure'"
           >
@@ -461,6 +464,7 @@ import { useI18n } from 'vue-i18n'
 import { languageMap, availableModels, localStorageKey, availableModelsForPlus, availableModelsForPalm, availableModelsForGemini } from '@/utils/constant'
 import { useRouter } from 'vue-router'
 import { forceNumber } from '@/utils/common'
+import { useUserStore } from '@/store/authStore'
 
 const router = useRouter()
 
@@ -474,6 +478,8 @@ const languageList = [
     value: 'zh-cn'
   }
 ]
+
+const store = useUserStore()
 
 const replyLanguageList = Object.values(languageMap).map((key) => ({
   label: key,
@@ -709,7 +715,7 @@ function handleGeminiModelChange (val: string) {
 }
 
 function backToHome () {
-  router.push('/login')
+  router.push('/')
 }
 
 </script>

@@ -37,7 +37,13 @@ router.beforeEach((to, from, next) => {
   const loginQuery = { path: '/login', query: { redirect: to.fullPath } }
 
   if (reqAuth && !authUser) {
-    next(loginQuery)
+    store.getUser().then(() => {
+      if (!store.user) {
+        next(loginQuery)
+      } else {
+        next()
+      }
+    })
   } else {
     next() // make sure to always call next()!
   }

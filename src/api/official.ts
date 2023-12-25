@@ -1,6 +1,7 @@
 import OpenAI, { ClientOptions } from 'openai'
 import { availableModels } from '@/utils/constant'
 import { Ref } from 'vue'
+import { useUserStore } from '@/store/authStore'
 
 function setConfig (apiKey: string, basePath?: string): ClientOptions {
   const config = { apiKey, basePath, dangerouslyAllowBrowser: true }
@@ -36,6 +37,11 @@ async function createChatCompletionStream (
       role: 'assistant',
       content: result.value
     })
+    const tokens = response?.usage?.total_tokens || 0
+    if (tokens) {
+      const store = useUserStore()
+      store.syncBalance(tokens)
+    }
   } catch (error) {
     if (error instanceof OpenAI.APIError) {
       result.value = error.message

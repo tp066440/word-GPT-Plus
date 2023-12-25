@@ -17,32 +17,54 @@
       status-icon
       require-asterisk-position="right"
     >
-      <el-form-item label="Email" prop="email">
+      <el-form-item
+        label="Email"
+        prop="email"
+      >
         <el-input
           v-model="data.email"
           type="email"
           placeholder="Email"
         />
       </el-form-item>
-      <el-form-item label="Password" prop="password">
+      <el-form-item
+        label="Password"
+        prop="password"
+      >
         <el-input
           v-model="data.password"
           type="password"
           placeholder="password"
         />
       </el-form-item>
-      <el-form-item class="justify-between" prop="remember">
-        <el-radio label="Remember" value="true" v-model="data.remember"/>
+      <el-form-item
+        class="justify-between"
+        prop="remember"
+      >
+        <el-radio
+          v-model="data.remember"
+          label="Remember"
+          value="true"
+        />
         <el-link
           href="https://web.aiapp.gg/forgot-password"
           target="_blank"
         >
-            Forgot Password?
+          Forgot Password?
         </el-link>
       </el-form-item>
       <el-form-item>
-        <el-row justify="center" style="width: 100%;">
-          <el-button :loading="loading" type="primary" @click="submitForm(loginForm)">Login</el-button>
+        <el-row
+          justify="center"
+          style="width: 100%;"
+        >
+          <el-button
+            :loading="loading"
+            type="primary"
+            @click="submitForm(loginForm)"
+          >
+            Login
+          </el-button>
         </el-row>
       </el-form-item>
     <!-- <div style="text-align:center;">
@@ -55,7 +77,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import API from '@/api'
+import { useUserStore } from '@/store/authStore'
 
 interface Auth {
   email: string
@@ -67,6 +89,8 @@ const loginForm = ref<FormInstance>()
 
 const loading = ref<Boolean>(false)
 
+const store = useUserStore()
+
 const data = reactive<Auth>({
   email: '',
   password: '',
@@ -77,7 +101,7 @@ const rules = reactive<FormRules<Auth>>({
   email: [{ required: true, message: 'Please input email address', trigger: 'blur' }, {
     type: 'email',
     message: 'Please input correct email address',
-    trigger: ['blur', 'change']
+    trigger: 'blur'
   }],
   password: [
     { required: true, message: 'Please input password', trigger: 'blur' },
@@ -88,13 +112,12 @@ const rules = reactive<FormRules<Auth>>({
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   loading.value = true
-  await formEl.validate(async (valid, fields) => {
+  await formEl.validate(async (valid) => {
     if (valid) {
       console.log('submit!')
-      await API.app.login(data)
+      await store.login(data)
       loading.value = false
     } else {
-      console.log('error submit!', fields)
       loading.value = false
     }
   })
