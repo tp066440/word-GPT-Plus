@@ -44,7 +44,7 @@ export const useUserStore = defineStore('user', {
 
   actions: {
     async logout (): Promise<void> {
-      await ApiClient.post('/api/logout')
+    //   await ApiClient.post('/api/logout')
       this.user = null
       this.isLoggedIn = false
       this.token = null
@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', {
     async login (payload: Auth): Promise<void> {
       try {
         const { data } = await ApiClient.post('/api/login', payload)
-
+        ElMessage.success('Login Successfull')
         this.isLoggedIn = true
         this.token = data.accessToken
         localStorage.setItem('token', data.accessToken)
@@ -68,23 +68,36 @@ export const useUserStore = defineStore('user', {
         ElMessage.error(error.message || 'Login Failed')
       }
     },
+    async loadUserInfo (): Promise<void> {
+      await Promise.all([
+        this.getUser(),
+        this.setApiKey(),
+        this.getBalance()
+      ])
+    },
     async getUser (): Promise<void> {
       try {
         const { data } = await ApiClient.get('/api/user')
         if (data) {
           this.user = data
           localStorage.setItem('user', JSON.stringify(data))
-          const response = await ApiClient.post('/api/api_key')
-          if (response.data && response.data.key) {
-            localStorage.setItem(localStorageKey.apiKey, response.data.key)
-          }
-          this.checkBalance()
         }
       } catch (error: any) {
         ElMessage.error(error.message || 'User Not Found')
       }
     },
-    async checkBalance (): Promise<void> {
+    async setApiKey (): Promise<void> {
+      try {
+        const response = await ApiClient.post('/api/api_key')
+
+        if (response.data && response.data.key) {
+          localStorage.setItem(localStorageKey.apiKey, response.data.key)
+        }
+      } catch (error: any) {
+        ElMessage.error(error.message || 'Something Went Wrong')
+      }
+    },
+    async getBalance (): Promise<void> {
       try {
         const { data } = await ApiClient.get('/api/check-balance')
         if (data && data.balance) {

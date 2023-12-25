@@ -21,6 +21,7 @@
           Logout
         </el-button>
       </el-header>
+      <el-divider style="margin: 10px 0;"/>
       <el-main class="container">
         <el-form
           label-position="left"
@@ -33,7 +34,6 @@
             <el-input
               v-model="systemPrompt"
               clearable
-              size="small"
               :placeholder="$t('homeSystemDescription')"
             />
             <span>
@@ -76,7 +76,6 @@
               v-model="prompt"
               autofocus
               clearable
-              size="small"
               :placeholder="$t('homePromptDescription')"
             />
             <span>
@@ -117,7 +116,6 @@
             </template>
             <el-select
               v-model="replyLanguage"
-              size="small"
               placeholder="Select a reply language"
               @change="handelReplyLanguageChange"
             >
@@ -135,7 +133,6 @@
             </template>
             <el-select
               v-model="insertType"
-              size="small"
               placeholder="Select a insert type"
               @change="handelInsertTypeChange"
             >
@@ -238,8 +235,7 @@
           <el-input
             v-model="result"
             type="textarea"
-            autosize
-            :row="5"
+            :autosize="{ minRows: 8 }"
             :aria-placeholder="$t('result')"
           />
         </div>
@@ -958,6 +954,7 @@ async function continueChat () {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding:10px;
   /* margin-top: 50px; */
 }
 
@@ -974,6 +971,7 @@ async function continueChat () {
 
 .result-group {
   width: 100%;
+  margin-top:10px;
 }
 
 .mr-3 {

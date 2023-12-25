@@ -23,7 +23,7 @@
           type="primary"
           round
           plain
-          style="margin-bottom: 5px;width: 100%;"
+          style="margin-bottom: 15px;width: 100%;"
           @click="backToHome"
         >
           {{ $t('backToHome') }}
@@ -41,7 +41,7 @@
             </template>
             <el-select
               v-model="currentUILanguage"
-              size="small"
+
               :placeholder="$t('settingChooseLanguage')"
               @change="handleLocalLanguageChange"
             >
@@ -62,7 +62,7 @@
               </template>
               <el-select
                 v-model="api"
-                size="small"
+
                 :placeholder="$t('chooseAPIDescription')"
                 @change="handleApiChange"
               >
@@ -85,7 +85,7 @@
               <el-input
                 v-model="accessToken"
                 :placeholder="$t('accessTokenDescription')"
-                size="small"
+
                 clearable
                 @blur="handleAccessTokenChange"
               />
@@ -101,7 +101,7 @@
               <el-input
                 v-model="apiKey"
                 :placeholder="$t('apiKeyDescription')"
-                size="small"
+
                 @blur="handleApiKeyChange"
               />
             </el-form-item>
@@ -116,7 +116,7 @@
               <el-input
                 v-model="azureAPIKey"
                 :placeholder="$t('apiKeyDescription')"
-                size="small"
+
                 @blur="handleAzureAPIKeyChange"
               />
             </el-form-item>
@@ -133,7 +133,7 @@
             <el-input
               v-model="azureAPIEndpoint"
               :placeholder="$t('settingAzureEndpoint')"
-              size="small"
+
               @blur="handleAzureAPIEndpointChange"
             />
           </el-form-item>
@@ -148,7 +148,7 @@
             <el-input
               v-model="azureDeploymentName"
               :placeholder="$t('settingAzureDeploymentName')"
-              size="small"
+
               @blur="handleAzureDeploymentNameChange"
             />
           </el-form-item>
@@ -165,7 +165,7 @@
               :min="0"
               :max="2"
               :step="0.1"
-              size="small"
+
               @change="handleAzureTemperatureChange"
             />
           </el-form-item>
@@ -181,7 +181,7 @@
               v-model="azureMaxTokens"
               :min="1"
               :step="1"
-              size="small"
+
               @change="handleAzureMaxTokensChange"
             />
           </el-form-item>
@@ -196,7 +196,7 @@
             <el-input
               v-model="palmAPIKey"
               :placeholder="$t('apiKeyDescription')"
-              size="small"
+
               @blur="handlePalmAPIKeyChange"
             />
           </el-form-item>
@@ -211,7 +211,7 @@
             <el-input
               v-model="palmAPIEndpoint"
               :placeholder="$t('settingPalmEndpoint')"
-              size="small"
+
               @blur="handlePalmAPIEndpointChange"
             />
           </el-form-item>
@@ -228,7 +228,7 @@
               :min="0"
               :max="2"
               :step="0.1"
-              size="small"
+
               @change="handlePalmTemperatureChange"
             />
           </el-form-item>
@@ -244,7 +244,7 @@
               v-model="palmMaxTokens"
               :min="1"
               :step="1"
-              size="small"
+
               @change="handlePalmMaxTokensChange"
             />
           </el-form-item>
@@ -259,7 +259,7 @@
             <el-input
               v-model="geminiAPIKey"
               :placeholder="$t('apiKeyDescription')"
-              size="small"
+
               @blur="handleGeminiAPIKeyChange"
             />
           </el-form-item>
@@ -276,7 +276,7 @@
               :min="0"
               :max="1"
               :step="0.1"
-              size="small"
+
               @change="handleGeminiTemperatureChange"
             />
           </el-form-item>
@@ -292,7 +292,7 @@
               v-model="geminiMaxTokens"
               :min="1"
               :step="1"
-              size="small"
+
               @change="handleGeminiMaxTokensChange"
             />
           </el-form-item>
@@ -306,7 +306,7 @@
             </template>
             <el-select
               v-model="geminiModel"
-              size="small"
+
               :placeholder="$t('settingModel')"
               @change="handleGeminiModelChange"
             >
@@ -328,7 +328,7 @@
             </template>
             <el-select
               v-model="palmModel"
-              size="small"
+
               :placeholder="$t('settingModel')"
               @change="handlePalmModelChange"
             >
@@ -351,7 +351,7 @@
             <el-input
               v-model="basePath"
               :placeholder="$t('settingBasePath')"
-              size="small"
+
               @blur="handleBasePathChange"
             />
           </el-form-item>
@@ -365,7 +365,7 @@
             </template>
             <el-select
               v-model="model"
-              size="small"
+
               :placeholder="$t('settingModel')"
               @change="handleModelChange"
             >
@@ -387,7 +387,7 @@
             </template>
             <el-select
               v-model="webModel"
-              size="small"
+
               :placeholder="$t('settingModel')"
               @change="handleWebModelChange"
             >
@@ -412,7 +412,7 @@
               :min="0"
               :max="2"
               :step="0.1"
-              size="small"
+
               @change="handleTemperatureChange"
             />
           </el-form-item>
@@ -428,7 +428,7 @@
               v-model="maxTokens"
               :min="1"
               :step="1"
-              size="small"
+
               @change="handleMaxTokensChange"
             />
           </el-form-item>
@@ -440,7 +440,7 @@
             </template>
             <el-select
               v-model="replyLanguage"
-              size="small"
+
               :placeholder="$t('settingReplyLanguage')"
               @change="handleReplyLanguageChange"
             >
@@ -516,7 +516,7 @@ const webModel = ref('default')
 const model = ref(availableModels['gpt-3.5'])
 const apiKey = ref('')
 const temperature = ref(0.7)
-const maxTokens = ref(800)
+const maxTokens = ref(600)
 const basePath = ref('')
 // azure OpenAI API
 const azureAPIKey = ref('')

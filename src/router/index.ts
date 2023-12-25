@@ -32,18 +32,23 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const store = useUserStore()
+  const isLoggedIn = store.isLoggedIn
   const authUser = store.user
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth)
   const loginQuery = { path: '/login', query: { redirect: to.fullPath } }
 
   if (reqAuth && !authUser) {
-    store.getUser().then(() => {
-      if (!store.user) {
-        next(loginQuery)
-      } else {
-        next()
-      }
-    })
+    if (!isLoggedIn) {
+      next(loginQuery)
+    } else {
+      store.loadUserInfo().then(() => {
+        if (!store.user) {
+          next(loginQuery)
+        } else {
+          next()
+        }
+      })
+    }
   } else {
     next() // make sure to always call next()!
   }
