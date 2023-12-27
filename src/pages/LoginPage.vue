@@ -4,8 +4,13 @@
       class="view-title"
       align="middle"
       justify="center"
-      style="font-size: 20px;color: black;margin-bottom: 20px;"
+      style="font-size: 20px;color: black;margin-bottom: 20px;flex-direction: column;gap: 10px;"
     >
+      <img
+        width="80"
+        alt="AIAPP Logo"
+        src="/assets/logo.webp"
+      >
       {{ $t('login') }}
     </el-row>
     <el-form
@@ -61,6 +66,7 @@
           <el-button
             :loading="loading"
             type="primary"
+            :icon="User"
             @click="submitForm(loginForm)"
           >
             Login
@@ -77,6 +83,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import { User } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/authStore'
 
 interface Auth {

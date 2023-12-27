@@ -51,13 +51,13 @@ export const availableModels: IStringKeyMap = {
   'gpt-3.5-turbo-1106': 'gpt-3.5-turbo-1106',
   'gpt-3.5-0613': 'gpt-3.5-turbo-0613',
   'gpt-3.5-16k': 'gpt-3.5-turbo-16k',
-  'gpt-3.5-16k-0613': 'gpt-3.5-turbo-16k-0613',
-  'text-davinci-003': 'text-davinci-003',
-  gtp4: 'gpt-4',
-  'gpt-4-turbo': 'gpt-4-1106-preview',
-  'gpt4-0613': 'gpt-4-0613',
-  'gpt4-32k': 'gpt-4-32k',
-  'gpt4-32k-0613': 'gpt-4-32k-0613'
+  'gpt-3.5-16k-0613': 'gpt-3.5-turbo-16k-0613'
+//   'text-davinci-003': 'text-davinci-003',
+//   gtp4: 'gpt-4',
+//   'gpt-4-turbo': 'gpt-4-1106-preview',
+//   'gpt4-0613': 'gpt-4-0613',
+//   'gpt4-32k': 'gpt-4-32k',
+//   'gpt4-32k-0613': 'gpt-4-32k-0613'
 }
 
 // Web API 可用的模型
@@ -121,7 +121,7 @@ export const buildInPrompt = {
     system: (language: string) => `Act as an ${language} translator, spelling corrector and improver.`,
     user: (text: string, language: string) => `I will speak to you in any language and you will detect the language,
     translate it and answer in the corrected and improved version of my text, in ${language}.
-    I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, 
+    I want you to replace my simplified A0-level words and sentences with more beautiful and elegant,
     upper level ${language} words and sentences.
     Keep the meaning same, but make them more literary.
     I want you to only reply the correction, the improvements and nothing else, do not write explanations.

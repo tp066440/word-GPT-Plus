@@ -21,7 +21,7 @@
           Logout
         </el-button>
       </el-header>
-      <el-divider style="margin: 10px 0;"/>
+      <el-divider style="margin: 10px 0;" />
       <el-main class="container">
         <el-form
           label-position="left"
@@ -29,7 +29,7 @@
         >
           <el-form-item>
             <template #label>
-              <span>{{ $t('homeSystem') }}</span>
+              <span class="font-800">{{ $t('homeSystem') }}</span>
             </template>
             <el-input
               v-model="systemPrompt"
@@ -70,12 +70,14 @@
           </el-form-item>
           <el-form-item>
             <template #label>
-              <span>{{ $t('homePrompt') }}</span>
+              <span class="font-800">{{ $t('homePrompt') }}</span>
             </template>
             <el-input
               v-model="prompt"
               autofocus
               clearable
+              autosize
+              type="textarea"
               :placeholder="$t('homePromptDescription')"
             />
             <span>
@@ -112,7 +114,7 @@
           </el-form-item>
           <el-form-item>
             <template #label>
-              <span>{{ $t('settingReplyLanguage') }}</span>
+              <span class="font-800">{{ $t('settingReplyLanguage') }}</span>
             </template>
             <el-select
               v-model="replyLanguage"
@@ -129,7 +131,7 @@
           </el-form-item>
           <el-form-item>
             <template #label>
-              <span>{{ $t('insertType') }}</span>
+              <span class="font-800">{{ $t('insertType') }}</span>
             </template>
             <el-select
               v-model="insertType"
@@ -184,9 +186,9 @@
             type="primary"
             size="small"
             :disabled="loading"
-            @click="polish"
+            @click="custom"
           >
-            {{ $t('polish') }}
+            {{ $t('custom') }}
           </el-button>
           <el-button
             class="api-button"
@@ -197,14 +199,18 @@
           >
             {{ $t('academic') }}
           </el-button>
-          <el-button
-            class="api-button"
-            type="warning"
-            size="small"
-            @click="settings"
+          <el-tooltip
+            effect="dark"
+            content="Manage Settings"
           >
-            {{ $t('settings') }}
-          </el-button>
+            <el-button
+              class="api-button"
+              type="warning"
+              size="small"
+              :icon="Setting"
+              @click="settings"
+            />
+          </el-tooltip>
         </el-button-group>
         <div
           style="margin-top: 5px;align-items: center;display: flex;margin-bottom: 5px;"
@@ -257,7 +263,6 @@
           <el-input
             v-model="addSystemPromptAlias"
             clearable
-            size="small"
             :placeholder="$t('addSystemPromptAliasDescription')"
           />
         </el-form-item>
@@ -269,7 +274,6 @@
             v-model="addSystemPromptValue"
             clearable
             type="textarea"
-            size="small"
             :placeholder="$t('addSystemPromptDescription')"
           />
         </el-form-item>
@@ -304,7 +308,6 @@
           <el-input
             v-model="addPromptAlias"
             clearable
-            size="small"
             :placeholder="$t('addPromptAliasDescription')"
           />
         </el-form-item>
@@ -316,7 +319,6 @@
             v-model="addPromptValue"
             clearable
             type="textarea"
-            size="small"
             :placeholder="$t('homePromptDescription')"
           />
         </el-form-item>
@@ -344,7 +346,6 @@
         v-model="removeSystemPromptValue"
         multiple
         filterable
-        size="small"
         style="width: 100%;"
         placeholder="Select"
       >
@@ -378,7 +379,6 @@
         v-model="removePromptValue"
         multiple
         filterable
-        size="small"
         style="width: 100%;"
         placeholder="Select"
       >
@@ -403,6 +403,43 @@
         </el-button>
       </template>
     </el-dialog>
+    <el-dialog
+      v-model="customPromptDialog"
+      width="90%"
+      :title="$t('customPrompt')"
+      destroy-on-close
+      @closed="customPromptDialogClosed"
+    >
+      <el-form
+        label-position="top"
+        label-width="50px"
+      >
+        <el-form-item>
+          <template #label>
+            <span>{{ $t('homePrompt') }}</span>
+          </template>
+          <el-input
+            v-model="prompt"
+            clearable
+            type="textarea"
+            :placeholder="$t('addSystemPromptDescription')"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button
+          @click="customPromptDialog = false"
+        >
+          {{ $t('cancel') }}
+        </el-button>
+        <el-button
+          type="primary"
+          @click="runCustomPrompt"
+        >
+          {{ $t('run') }}
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -412,7 +449,7 @@ import { useRouter } from 'vue-router'
 import { localStorageKey, languageMap, buildInPrompt, availableModels, availableModelsForPalm, availableModelsForGemini } from '@/utils/constant'
 import { promptDbInstance } from '@/store/promtStore'
 import { IStringKeyMap } from '@/types'
-import { CirclePlus, Remove } from '@element-plus/icons-vue'
+import { CirclePlus, Remove, Setting } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ChatGPTUnofficialProxyAPI, ChatMessage } from 'chatgpt'
 import { checkAuth, forceNumber } from '@/utils/common'
@@ -475,7 +512,7 @@ const addPromptValue = ref('')
 const removePromptVisible = ref(false)
 const removePromptValue = ref<any[]>([])
 
-const result = ref('res')
+const result = ref('')
 const loading = ref(false)
 const router = useRouter()
 const historyDialog = ref<any[]>([])
@@ -484,6 +521,17 @@ const conversationId = ref('')
 
 const jsonIssue = ref(false)
 const errorIssue = ref(false)
+
+const customPromptDialog = ref(false)
+
+const customPromptDialogClosed = () => {
+  prompt.value = ''
+}
+
+const runCustomPrompt = () => {
+  template('custom')
+  customPromptDialog.value = false
+}
 
 const insertType = ref('replace')
 const insertTypeList = [
@@ -796,9 +844,10 @@ function summarize () {
   template('summary')
 }
 
-function polish () {
+function custom () {
   if (!checkApiKey()) return
-  template('polish')
+  //   template('polish')
+  customPromptDialog.value = false
 }
 
 function academic () {
@@ -976,5 +1025,8 @@ async function continueChat () {
 
 .mr-3 {
  margin-right: 1rem;
+}
+.font-800 {
+  font-weight: 600 !important;
 }
 </style>
