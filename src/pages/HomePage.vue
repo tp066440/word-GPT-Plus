@@ -528,8 +528,8 @@ const customPromptDialogClosed = () => {
   prompt.value = ''
 }
 
-const runCustomPrompt = () => {
-  template('custom')
+const runCustomPrompt = async () => {
+  await template('custom')
   customPromptDialog.value = false
 }
 
