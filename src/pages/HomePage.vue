@@ -74,7 +74,6 @@
             </template>
             <el-input
               v-model="prompt"
-              autofocus
               clearable
               autosize
               type="textarea"
@@ -201,7 +200,7 @@
           </el-button>
           <el-tooltip
             effect="dark"
-            content="Manage Settings"
+            content="Settings"
           >
             <el-button
               class="api-button"
@@ -421,8 +420,9 @@
           <el-input
             v-model="prompt"
             clearable
+            :autosize="{ minRows: 4 }"
             type="textarea"
-            :placeholder="$t('addSystemPromptDescription')"
+            :placeholder="$t('addPromptDescription')"
           />
         </el-form-item>
       </el-form>
@@ -847,7 +847,7 @@ function summarize () {
 function custom () {
   if (!checkApiKey()) return
   //   template('polish')
-  customPromptDialog.value = false
+  customPromptDialog.value = true
 }
 
 function academic () {
